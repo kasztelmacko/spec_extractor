@@ -7,7 +7,7 @@ class SolarPanelSpecs(BaseModel):
     
     nominal_voltage_v: float | None = Field(default=None, description="Vmp or Nominal Voltage")
     max_voltage_v: float | None = Field(default=None, description="Voc or Max System Voltage")
-    current_a: float | None = Field(default=None, description="Imp or operational amperage")
+    operational_amperage_a: float | None = Field(default=None, description="Imp or operational amperage")
     
     height_mm: float | None = Field(default=None)
     width_mm: float | None = Field(default=None)
