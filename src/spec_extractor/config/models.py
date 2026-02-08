@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
 
-class SolarSpecs(BaseModel):
+class SolarPanelSpecs(BaseModel):
     model_name: str = Field(description="The full product name from the header")
     rated_power_w: int = Field(description="Normalized power in Watts (Rated/Output/Nominal/Peak)")
     efficiency_pct: float | None = Field(default=None, description="Conversion efficiency percentage")

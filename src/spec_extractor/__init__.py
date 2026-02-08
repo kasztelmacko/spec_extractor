@@ -1,4 +1,4 @@
-"""Spec extractor package."""
+from src.spec_extractor.config.models import SolarPanelSpecs
+from src.spec_extractor.config.config import OllamaConfig
 
-__version__ = "0.1.0"
-
+__all__ = ["SolarPanelSpecs", "OllamaConfig"]
