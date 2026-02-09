@@ -1,5 +1,5 @@
 from langchain_core.prompts import ChatPromptTemplate
-from langchain.output_parsers import PydanticOutputParser
+from langchain_core.output_parsers import PydanticOutputParser
 
 def get_extraction_prompt(output_parser: PydanticOutputParser) -> ChatPromptTemplate:
     system_template = """

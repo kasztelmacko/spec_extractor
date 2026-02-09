@@ -1,16 +1,23 @@
 #!/bin/bash
 
-# Activate UV environment if it exists
+export PYTHONPATH=/app:${PYTHONPATH}
+
 if [ -d ".venv" ]; then
     source .venv/bin/activate
     echo "✓ UV environment activated"
 else
-    echo "⚠ Warning: .venv not found. Run 'uv sync' to create it."
+    echo "⚠ .venv not found. Creating it with 'uv sync'..."
+    uv sync
+    if [ -d ".venv" ]; then
+        source .venv/bin/activate
+        echo "✓ UV environment created and activated"
+    else
+        echo "✗ Failed to create .venv"
+    fi
 fi
 
-# Execute command or start interactive shell
 if [ $# -eq 0 ]; then
-    exec /bin/bash
+    exec /bin/bash -i
 else
     exec "$@"
 fi

@@ -12,6 +12,9 @@ RUN pip install --no-cache-dir uv
 
 WORKDIR /app
 
+# Set PYTHONPATH to include project root
+ENV PYTHONPATH=/app:${PYTHONPATH}
+
 COPY pyproject.toml ./
 COPY . .
 
