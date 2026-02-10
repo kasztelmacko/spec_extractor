@@ -1,4 +1,17 @@
 services:
+  ollama:
+    build:
+      context: .
+      dockerfile: Dockerfile.ollama
+      args:
+        OLLAMA_MODEL: ${OLLAMA_MODEL:-llama3.2}
+    container_name: ollama
+    volumes:
+      - ollama-data:/root/.ollama
+    ports:
+      - "11434:11434"
+    restart: unless-stopped
+
   spec-extractor:
     build: .
     env_file:
@@ -9,6 +22,12 @@ services:
     working_dir: /app
     stdin_open: true
     tty: true
+    depends_on:
+      - ollama
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
 
 volumes:
   uv-cache:
+  ollama-data:
+

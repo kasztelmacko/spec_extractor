@@ -22,6 +22,15 @@ def get_extraction_prompt(output_parser: PydanticOutputParser) -> ChatPromptTemp
     5. **Model Name**: 
        - Extract the full product name usually found at the beginning of the manual[cite: `Solnix Horizon`, `Aurelios Prime`, `TerraVolt Edge`].
 
+    ### Output Format:
+    You MUST respond with ONLY valid JSON. Do NOT include:
+    - Markdown code blocks (no ```json or ```)
+    - Explanatory text before or after the JSON
+    - Comments in the JSON (no // or /* */)
+    - Any text outside the JSON object
+    
+    Return ONLY the raw JSON object that matches the required schema.
+
     {format_instructions}
     """
 

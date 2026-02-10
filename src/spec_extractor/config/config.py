@@ -1,4 +1,5 @@
 from pydantic import BaseModel, Field
+import os
 
 
 class OllamaConfig(BaseModel):
@@ -22,5 +23,10 @@ class OllamaConfig(BaseModel):
         """Get the appropriate Ollama URL based on configuration."""
         if self.if_use_api and self.api_url:
             return self.api_url
+        
+        env_url = os.getenv("OLLAMA_HOST")
+        if env_url:
+            return env_url
+        
         return self.base_url or "http://localhost:11434"
 

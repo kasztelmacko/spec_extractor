@@ -1,0 +1,14 @@
+FROM ollama/ollama:latest
+
+# Model to pre-pull can be configured at build time.
+# Default is `llama3.2` if no argument is provided.
+ARG OLLAMA_MODEL=llama3.2
+
+# Pre-pull the default model so it's ready when containers start.
+# This runs the Ollama server in the background, pulls the model,
+# then stops the server so the final image is clean.
+RUN ollama serve & \
+    sleep 10 && \
+    ollama pull ${OLLAMA_MODEL} && \
+    pkill ollama || true
+
