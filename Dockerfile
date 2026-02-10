@@ -7,28 +7,18 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 RUN curl -fsSL https://ollama.com/install.sh | sh
-
 RUN pip install --no-cache-dir uv
 
 WORKDIR /app
-
-# Set PYTHONPATH to include project root
-ENV PYTHONPATH=/app:${PYTHONPATH}
+ENV PYTHONPATH=/app
 
 COPY pyproject.toml ./
-COPY . .
-
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-
 RUN uv sync
 
-RUN echo 'if [ -d "/app/.venv" ]; then\n\
-    source /app/.venv/bin/activate\n\
-    echo "✓ UV environment activated"\n\
-fi' >> /root/.bashrc
+COPY scripts/entrypoint.sh /scripts/entrypoint.sh
+RUN chmod +x /scripts/entrypoint.sh
 
-ENTRYPOINT ["/entrypoint.sh"]
+COPY . .
 
+ENTRYPOINT ["scripts/entrypoint.sh"]
 CMD ["/bin/bash"]
-

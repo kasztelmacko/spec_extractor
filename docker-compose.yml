@@ -1,9 +1,6 @@
 services:
   spec-extractor:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: spec-extractor
+    build: .
     env_file:
       - .env
     volumes:
@@ -15,4 +12,3 @@ services:
 
 volumes:
   uv-cache:
-
