@@ -7,7 +7,7 @@ from langchain_core.output_parsers import PydanticOutputParser
 
 from pathlib import Path
 import re
-import fitz  # PyMuPDF
+import fitz
 
 
 class TechnicalSpecificationExtractor:
@@ -37,7 +37,6 @@ class TechnicalSpecificationExtractor:
         return self._extract_specification_from_text(text=text_cleaned)
 
     def _extract_text_from_pdf(self, file_path: str | Path) -> str:
-        """Extract text from PDF using PyMuPDF library."""
         pdf_path = str(file_path) if isinstance(file_path, Path) else file_path
         doc = fitz.open(pdf_path)
         text_parts = []
