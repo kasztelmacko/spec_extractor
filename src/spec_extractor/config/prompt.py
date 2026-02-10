@@ -10,6 +10,7 @@ def get_extraction_prompt(output_parser: PydanticOutputParser) -> ChatPromptTemp
    ### Extraction Rules:
    1. **Normalization**: Map diverse terms to standard fields:
       - 'Rated Power', 'Nominal Power', 'Output Power', 'Maximum Output', and 'Module Rating' -> `rated_power_w`[cite: 6, 25, 42, 62, 76, 93].
+      - 'Peak Efficiency', 'Efficiency' -> `efficiency_pct` [cite: 19, 18.1]
       - 'Vmp' or 'Nominal Voltage' -> `nominal_voltage_v`[cite: 62, 93].
       - 'Voc' or 'Max Voltage' -> `max_voltage_v`[cite: 6, 27].
       - 'Imp' -> `operational_amperage_a`.

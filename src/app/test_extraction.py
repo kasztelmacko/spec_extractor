@@ -14,10 +14,11 @@ def main():
         base_url=None,
     )
 
-    pdf_path = Path("data/sample_manuals/manual_1_cleaned.pdf")
+    for i in range(1, 7):
+        pdf_path = Path(f"data/sample_manuals/manual_{i}_cleaned.pdf")
 
-    specifics = extractor.extract(file_path=pdf_path)
-    print(specifics)
+        specifics = extractor.extract(file_path=pdf_path)
+        print(specifics)
 
 
 if __name__ == "__main__":
