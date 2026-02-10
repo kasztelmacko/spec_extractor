@@ -1,9 +1,3 @@
-## Prerequisites
-
-- **Docker** and **Docker Compose** installed on your system
-- At least 8GB of free disk space (for Ollama models)
-- 4GB+ RAM recommended
-
 ## Quick Start
 
 ### 1. Clone the Repository
@@ -15,10 +9,14 @@ cd spec_extractor
 
 ### 2. Configure Environment (Optional)
 
-Create a `.env` file in the project root to customize settings:
+Copy a `.env.example` file as `.env` into the project root to customize settings:
 
 ```bash
 OLLAMA_MODEL=llama3.2
+GITHUB_TOKEN=token
+
+GITHUB_USER=username
+GITHUB_EMAIL=email
 ```
 
 If you don't create a `.env` file, the default model (`llama3.2`) will be used.
@@ -81,3 +79,9 @@ You can configure the following via `.env` file or environment variables:
    docker-compose build ollama
    docker-compose up -d ollama
    ```
+
+## Prerequisites
+
+- **Docker** and **Docker Compose** installed on your system
+- At least 8GB of free disk space (for Ollama models)
+- 4GB+ RAM recommended

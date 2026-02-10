@@ -11,6 +11,19 @@ import fitz
 
 
 class TechnicalSpecificationExtractor:
+    """Extracts technical specifications from solar panel PDF manuals using LLM.
+    
+    This class handles the complete extraction pipeline: PDF text extraction,
+    text cleaning, and AI-powered specification extraction using Ollama models.
+    
+    Args:
+        model_name: Name of the Ollama model to use for extraction (e.g., 'llama3.2', 'mistral').
+        if_use_api: Whether to use an external API endpoint instead of local Ollama instance.
+        api_url: API URL endpoint when if_use_api is True. If None and if_use_api is True, 
+            will raise an error.
+        base_url: Base URL for local Ollama instance. If None, will check OLLAMA_HOST 
+            environment variable or default to 'http://localhost:11434'.
+    """
     def __init__(
         self,
         model_name: str,
@@ -32,11 +45,13 @@ class TechnicalSpecificationExtractor:
         self.prompt = get_extraction_prompt(output_parser=self.output_parser)
 
     def extract(self, file_path: str) -> SolarPanelSpecs:
+        """Extracts solar panel specifications from a PDF file."""
         text = self._extract_text_from_pdf(file_path=file_path)
         text_cleaned = self._clean_extracted_text(text=text)
         return self._extract_specification_from_text(text=text_cleaned)
 
     def _extract_text_from_pdf(self, file_path: str | Path) -> str:
+        """Extracts raw text content from all pages of a PDF file."""
         pdf_path = str(file_path) if isinstance(file_path, Path) else file_path
         doc = fitz.open(pdf_path)
         text_parts = []
@@ -48,6 +63,7 @@ class TechnicalSpecificationExtractor:
         return "\n".join(text_parts)
 
     def _clean_extracted_text(self, text: str) -> str:
+        """Cleans extracted text by removing non-ASCII characters, collapsing whitespace, and removing empty lines."""
         text = text.encode('ascii', 'ignore').decode('ascii')
         lines = text.split('\n')
         cleaned_lines = []
@@ -60,6 +76,9 @@ class TechnicalSpecificationExtractor:
         return '\n'.join(cleaned_lines)
 
     def _extract_specification_from_text(self, text: str) -> SolarPanelSpecs:
+        """Uses LLM to extract structured specifications from cleaned text.
+        Returns a validated SolarPanelSpecs Pydantic model parsed from the LLM response.
+        """
         formatted_prompt = self.prompt.format_messages(text=text)
         response = self.llm.invoke(formatted_prompt)
         return self.output_parser.parse(response.content)
