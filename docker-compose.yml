@@ -4,6 +4,8 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: spec-extractor
+    env_file:
+      - .env
     volumes:
       - .:/app
       - uv-cache:/root/.cache/uv
