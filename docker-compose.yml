@@ -29,6 +29,7 @@ services:
       - OLLAMA_MODEL=${OLLAMA_MODEL:-llama3.2}
       - GRADIO_HOST=0.0.0.0
       - GRADIO_PORT=7860
+    command: tail -f /dev/null
 
 volumes:
   uv-cache:
