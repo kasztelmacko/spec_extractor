@@ -18,7 +18,7 @@ docker build -t spec_extractor .
 Start the services:
 
 ```bash
-docker run -p 7860:7860 --gpus all spec_extractor
+docker run -p 7860:7860 spec_extractor
 ```
 
 Then enter the url and input you PDF:
@@ -34,3 +34,4 @@ http://localhost:7860
 - At least 8GB of free disk space (for Ollama models)
 
 - 4GB+ RAM recommended
+
