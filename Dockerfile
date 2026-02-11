@@ -1,30 +1,19 @@
 FROM python:3.12-slim
 
-RUN apt-get update && apt-get install -y \
-    git \
-    curl \
-    zstd \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y curl zstd && rm -rf /var/lib/apt/lists/*
 
-RUN curl -fsSL --retry 5 -o /tmp/ollama-install.sh https://ollama.com/install.sh \
-    && chmod +x /tmp/ollama-install.sh \
-    && /tmp/ollama-install.sh \
-    && rm -rf /tmp/*
+RUN curl -fsSL https://ollama.com/install.sh | sh
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 WORKDIR /app
-# Add the uv virtualenv to the PATH so 'python' and 'uv' are always found
-ENV PATH="/app/.venv/bin:$PATH"
-ENV PYTHONPATH=/app
+ENV PYTHONPATH="/app"
+ENV GRADIO_SERVER_NAME="0.0.0.0"
 
-COPY pyproject.toml ./
-# Install uv and sync dependencies
-RUN pip install --no-cache-dir uv && uv sync
+COPY pyproject.toml .
+RUN uv sync
 
-# Copy script to a safe location outside of /app to avoid volume overwrite issues
-COPY scripts/entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
+RUN ollama serve & sleep 10 && ollama pull llama3.2
 
 COPY . .
 
-# Use the absolute path to the script
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+CMD ["sh", "-c", "ollama serve & .venv/bin/python src/app/gradio_app.py"]

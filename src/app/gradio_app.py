@@ -5,6 +5,7 @@ import gradio as gr
 import pandas as pd
 
 from src.spec_extractor.extractor import TechnicalSpecificationExtractor
+import src.spec_extractor.config.config as CONF
 
 
 def extract_specifications(pdf_file: Optional[str]) -> pd.DataFrame:
@@ -48,15 +49,12 @@ with gr.Blocks(title="Solar Panel Specification Extractor") as demo:
     )
 
 if __name__ == "__main__":
-    MODEL_NAME = os.getenv("OLLAMA_MODEL", "llama3.2")
-    host = os.getenv("GRADIO_HOST", "0.0.0.0")
-    port = int(os.getenv("GRADIO_PORT", "7860"))
 
     EXTRACTOR = TechnicalSpecificationExtractor(
-        model_name=MODEL_NAME,
+        model_name=CONF.MODEL_NAME,
         if_use_api=False,
         api_url=None,
         base_url=None,
     )
 
-    demo.launch(server_name=host, server_port=port)
+    demo.launch(server_name=CONF.GRADIO_HOST, server_port=CONF.GRADIO_PORT)

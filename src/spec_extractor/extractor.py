@@ -1,5 +1,5 @@
 from src.spec_extractor.config.models import SolarPanelSpecs
-from src.spec_extractor.config.config import OllamaConfig
+from src.spec_extractor.config.ollama_config import OllamaConfig
 from src.spec_extractor.config.prompt import get_extraction_prompt
 from src.spec_extractor.config.model_variable_mapping import MODEL_VARIABLE_MAPPING
 
