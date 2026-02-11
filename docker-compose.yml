@@ -14,8 +14,6 @@ services:
 
   spec-extractor:
     build: .
-    env_file:
-      - .env
     volumes:
       - .:/app
       - uv-cache:/root/.cache/uv
@@ -28,6 +26,7 @@ services:
       - "7860:7860"
     environment:
       - OLLAMA_HOST=http://ollama:11434
+      - OLLAMA_MODEL=${OLLAMA_MODEL:-llama3.2}
       - GRADIO_HOST=0.0.0.0
       - GRADIO_PORT=7860
 

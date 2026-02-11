@@ -7,17 +7,19 @@ git clone https://github.com/kasztelmacko/spec_extractor.git
 cd spec_extractor
 ```
 
-### 2. Configure Environment
+### 2. Configure Environment (Optional)
 
-Copy a `.env.example` file as `.env` into the project root. The following settings can customized. **Creating .env file is necessary for running the project**, but changin parameters is not:
+The `.env` file is **optional**. All required environment variables are already configured in `docker-compose.yml` with sensible defaults.
+
+If you want to customize settings, you can copy `.env.example` to `.env` and modify it:
 
 ```bash
-OLLAMA_MODEL=llama3.2
-GITHUB_TOKEN=token
-
-GITHUB_USER=username
-GITHUB_EMAIL=email
+cp .env.example .env
 ```
+
+Available settings:
+- **`OLLAMA_MODEL`**: The Ollama model to use (default: `llama3.2`)
+- **`GITHUB_TOKEN`**, **`GITHUB_USER`**, **`GITHUB_EMAIL`**: Optional GitHub credentials for git operations
 
 If you don't create a `.env` file, the default model (`llama3.2`) will be used.
 
