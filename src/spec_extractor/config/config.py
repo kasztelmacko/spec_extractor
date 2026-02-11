@@ -1,8 +1,9 @@
-from pydantic import BaseModel, Field
 import os
+from pydantic import BaseModel, Field
 
 
 class OllamaConfig(BaseModel):
+    """Configuration for Ollama LLM connection and model selection."""
     model_name: str = Field(
         description="Name of the Ollama model to use (e.g., 'llama2', 'mistral')"
     )

@@ -1,3 +1,5 @@
+"""Mapping of SolarPanelSpecs field names to their display names and units."""
+
 MODEL_VARIABLE_MAPPING: dict[str, dict[str, str]] = {
     "model_name": {
         "DisplayName": "Model Name",

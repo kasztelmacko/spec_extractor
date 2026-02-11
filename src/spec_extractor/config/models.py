@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field
 
 class SolarPanelSpecs(BaseModel):
+    """Data model for solar panel technical specifications extracted from PDF manuals."""
     model_name: str = Field(description="The full product name from the header")
 
     height_mm: float | None = Field(default=None, description="Panel height in millimeters")

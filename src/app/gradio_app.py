@@ -1,13 +1,16 @@
 import os
 from typing import Optional
-import pandas as pd
+
 import gradio as gr
+import pandas as pd
+
 from src.spec_extractor.extractor import TechnicalSpecificationExtractor
+
 
 def extract_specifications(pdf_file: Optional[str]) -> pd.DataFrame:
     """Extract specifications from uploaded PDF file."""
     if not pdf_file:
-        return pd.DataFrame(columns=["Specification", "Value", "Unit"])
+        return pd.DataFrame(columns=["Specification", "Value", "Unit"]) 
     try:
         return EXTRACTOR.extract(file_path=pdf_file)
     except Exception as e:
