@@ -1,3 +1,6 @@
+from typing import Any
+
+
 from src.spec_extractor.config.models import SolarPanelSpecs
 from src.spec_extractor.config.config import OllamaConfig
 from src.spec_extractor.config.prompt import get_extraction_prompt
@@ -8,6 +11,7 @@ from langchain_core.output_parsers import PydanticOutputParser
 from pathlib import Path
 import re
 import fitz
+import pandas as pd
 
 
 class TechnicalSpecificationExtractor:
@@ -44,11 +48,19 @@ class TechnicalSpecificationExtractor:
         self.output_parser = PydanticOutputParser(pydantic_object=SolarPanelSpecs)
         self.prompt = get_extraction_prompt(output_parser=self.output_parser)
 
-    def extract(self, file_path: str) -> SolarPanelSpecs:
-        """Extracts solar panel specifications from a PDF file."""
+    def extract(self, file_path: str) -> pd.DataFrame:
+        """Extracts solar panel specifications from a PDF file and returns them as a DataFrame.
+
+        The pipeline goes through following steps:
+            1. reads and concatenates all PDF pages
+            2. cleans the text
+            3. runs the LLM to get a SolarPanelSpecs Pydantic model
+            4. converts the model into a DataFrame with columns: Specification, Value
+        """
         text = self._extract_text_from_pdf(file_path=file_path)
         text_cleaned = self._clean_extracted_text(text=text)
-        return self._extract_specification_from_text(text=text_cleaned)
+        specifications = self._extract_specification_from_text(text=text_cleaned)
+        return self._dump_specifications_to_dataframe(specifications=specifications)
 
     def _extract_text_from_pdf(self, file_path: str | Path) -> str:
         """Extracts raw text content from all pages of a PDF file."""
@@ -82,3 +94,8 @@ class TechnicalSpecificationExtractor:
         formatted_prompt = self.prompt.format_messages(text=text)
         response = self.llm.invoke(formatted_prompt)
         return self.output_parser.parse(response.content)
+
+    def _dump_specifications_to_dataframe(self, specifications: SolarPanelSpecs) -> pd.DataFrame:
+        """Convert a SolarPanelSpecs object into a DataFrame (Specification, Value)."""
+        data = specifications.model_dump(exclude_none=True)
+        return pd.DataFrame(list[tuple[str, Any]](data.items()), columns=["Specification", "Value"])

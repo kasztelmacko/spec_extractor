@@ -24,8 +24,12 @@ services:
     tty: true
     depends_on:
       - ollama
+    ports:
+      - "7860:7860"
     environment:
       - OLLAMA_HOST=http://ollama:11434
+      - GRADIO_HOST=0.0.0.0
+      - GRADIO_PORT=7860
 
 volumes:
   uv-cache:
