@@ -7,9 +7,9 @@ git clone https://github.com/kasztelmacko/spec_extractor.git
 cd spec_extractor
 ```
 
-### 2. Configure Environment (Optional)
+### 2. Configure Environment
 
-Copy a `.env.example` file as `.env` into the project root to customize settings:
+Copy a `.env.example` file as `.env` into the project root. The following settings can customized. **Creating .env file is necessary for running the project**, but changin parameters is not:
 
 ```bash
 OLLAMA_MODEL=llama3.2
@@ -84,4 +84,5 @@ You can configure the following via `.env` file or environment variables:
 
 - **Docker** and **Docker Compose** installed on your system
 - At least 8GB of free disk space (for Ollama models)
+
 - 4GB+ RAM recommended
