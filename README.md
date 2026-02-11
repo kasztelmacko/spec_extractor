@@ -47,13 +47,13 @@ Enter the application container:
 docker-compose exec spec-extractor bash
 ```
 
-Run the test extraction script:
+Run the gradio app:
 
 ```bash
-uv run python src/app/test_extraction.py
+uv run python src/app/gradio_app.py
 ```
 
-The script will extract specifications from a sample PDF and print the results.
+Inside the app input a PDF to extract specifications from.
 
 ## Configuration
 

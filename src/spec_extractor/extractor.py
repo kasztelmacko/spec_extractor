@@ -1,9 +1,7 @@
-from typing import Any
-
-
 from src.spec_extractor.config.models import SolarPanelSpecs
 from src.spec_extractor.config.config import OllamaConfig
 from src.spec_extractor.config.prompt import get_extraction_prompt
+from src.spec_extractor.config.model_vairable_mapping import MODEL_VARIABLE_MAPPING
 
 from langchain_ollama import ChatOllama
 from langchain_core.output_parsers import PydanticOutputParser
@@ -55,7 +53,7 @@ class TechnicalSpecificationExtractor:
             1. reads and concatenates all PDF pages
             2. cleans the text
             3. runs the LLM to get a SolarPanelSpecs Pydantic model
-            4. converts the model into a DataFrame with columns: Specification, Value
+            4. converts the model into a DataFrame with columns: Specification, Value, Unit
         """
         text = self._extract_text_from_pdf(file_path=file_path)
         text_cleaned = self._clean_extracted_text(text=text)
@@ -96,6 +94,19 @@ class TechnicalSpecificationExtractor:
         return self.output_parser.parse(response.content)
 
     def _dump_specifications_to_dataframe(self, specifications: SolarPanelSpecs) -> pd.DataFrame:
-        """Convert a SolarPanelSpecs object into a DataFrame (Specification, Value)."""
+        """Convert a SolarPanelSpecs object into a DataFrame with columns: Specification, Value, Unit.
+        
+        Uses MODEL_VARIABLE_MAPPING to get display names and units for each field.
+        """
         data = specifications.model_dump(exclude_none=True)
-        return pd.DataFrame(list[tuple[str, Any]](data.items()), columns=["Specification", "Value"])
+        
+        rows = []
+        for field_name, value in data.items():
+            mapping = MODEL_VARIABLE_MAPPING.get(field_name, {"DisplayName": field_name, "Unit": ""})
+            rows.append({
+                "Specification": mapping["DisplayName"],
+                "Value": value,
+                "Unit": mapping["Unit"],
+            })
+        
+        return pd.DataFrame(rows)
