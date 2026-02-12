@@ -21,7 +21,7 @@ Start the services:
 docker run -p 7860:7860 spec_extractor
 ```
 
-Then enter the url and input you PDF:
+Then, after few seconds, enter the url and input you PDF:
 
 ```
 http://localhost:7860
@@ -34,4 +34,5 @@ http://localhost:7860
 - At least 8GB of free disk space (for Ollama models)
 
 - 4GB+ RAM recommended
+
 
